@@ -15,7 +15,7 @@ class MovieMapper {
       popularity: movieDB.popularity,
       posterPath: movieDB.posterPath != ''
           ? 'https://image.tmdb.org/t/p/w500${movieDB.posterPath}'
-          : 'no-poster',
+          : 'https://sd.keepcalms.com/i/keep-calm-poster-not-found.png',
       releaseDate: movieDB.releaseDate,
       title: movieDB.title,
       video: movieDB.video,

@@ -19,8 +19,9 @@ class MovieDbResponse {
       MovieDbResponse(
         dates: json["dates"] != null ? Dates.fromJson(json["dates"]) : null,
         page: json["page"],
-        results: List<MovieFromMovideDB>.from(
-            json["results"].map((x) => MovieFromMovideDB.fromJson(x))),
+        results: List<MovieFromMovideDB>.from(json["results"]
+            .where((item) => item['release_date'] != null)
+            .map((x) => MovieFromMovideDB.fromJson(x))),
         totalPages: json["total_pages"],
         totalResults: json["total_results"],
       );

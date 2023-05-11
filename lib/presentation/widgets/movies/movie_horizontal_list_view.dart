@@ -53,7 +53,7 @@ class _MovieHorizontalListViewState extends State<MovieHorizontalListView> {
       child: Column(
         children: [
           if (widget.title != null || widget.subTitle != null)
-            _Header(title: widget.title, subTitle: widget.subTitle),          
+            _Header(title: widget.title, subTitle: widget.subTitle),
           SizedBox(height: 5),
           Expanded(
             child: ListView.builder(
@@ -88,26 +88,42 @@ class _Slide extends StatelessWidget {
           //* IMAGEN
           SizedBox(
             width: generalWidth,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Image.network(
-                movie.posterPath,
-                width: generalWidth,
-                fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress != null) {
-                    return const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.grey,
+                    blurRadius: 2,
+                    offset: Offset(2, 2),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.network(
+                  movie.posterPath,
+                  width: generalWidth,
+                  height: 228,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress != null) {
+                      return const SizedBox(
+                        height: 228,
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Center(
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                        ),
+                      );
+                    }
+                    return FadeIn(
+                      duration: const Duration(milliseconds: 500),
+                      child: child,
                     );
-                  }
-                  return FadeIn(
-                    duration: const Duration(milliseconds: 500),
-                    child: child,
-                  );
-                },
+                  },
+                ),
               ),
             ),
           ),

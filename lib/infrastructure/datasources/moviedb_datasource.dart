@@ -23,8 +23,16 @@ class MovieDbDatasource extends MoviesDatasource {
       _getMoviesByUrl('/movie/top_rated', page);
 
   @override
-  Future<List<Movie>> getUpComing({int page = 1}) async =>
-      _getMoviesByUrl('/movie/upcoming', page);
+  Future<List<Movie>> getUpComing({int page = 1}) async {
+    final response =
+        await dio.get('/movie/upcoming', queryParameters: {'page': page});
+    final movieDBResponse = MovieDbResponse.fromJson(response.data);
+    final List<Movie> movies = movieDBResponse.results
+        .where((movieDB) => movieDB.releaseDate.compareTo(DateTime.now()) > 0)
+        .map((movieDB) => MovieMapper.movieDBToEntity(movieDB))
+        .toList();
+    return movies;
+  }
 
   Future<List<Movie>> _getMoviesByUrl(String path, int page) async {
     final response = await dio.get(path, queryParameters: {'page': page});
@@ -34,7 +42,6 @@ class MovieDbDatasource extends MoviesDatasource {
   List<Movie> _jsonToMovies(Map<String, dynamic> json) {
     final movieDBResponse = MovieDbResponse.fromJson(json);
     final List<Movie> movies = movieDBResponse.results
-        .where((movieDB) => movieDB.posterPath != 'no-poster')
         .map((movieDB) => MovieMapper.movieDBToEntity(movieDB))
         .toList();
     return movies;
