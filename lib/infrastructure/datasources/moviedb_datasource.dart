@@ -11,24 +11,20 @@ class MovieDbDatasource extends MoviesDatasource {
     queryParameters: {'api_key': Environment.movieDBKey, 'language': 'es-MX'},
   ));
   @override
-  Future<List<Movie>> getNowPlaying({int page = 1}) async {
-    return _getMoviesByUrl('/movie/now_playing', page);
-  }
+  Future<List<Movie>> getNowPlaying({int page = 1}) async =>
+      _getMoviesByUrl('/movie/now_playing', page);
 
   @override
-  Future<List<Movie>> getPopular({int page = 1}) async {
-    return _getMoviesByUrl('/movie/popular', page);
-  }
+  Future<List<Movie>> getPopular({int page = 1}) async =>
+      _getMoviesByUrl('/movie/popular', page);
 
   @override
-  Future<List<Movie>> getTopRated({int page = 1}) async {
-    return _getMoviesByUrl('/movie/top_rated', page);
-  }
+  Future<List<Movie>> getTopRated({int page = 1}) async =>
+      _getMoviesByUrl('/movie/top_rated', page);
 
   @override
-  Future<List<Movie>> getUpComing({int page = 1}) async {
-    return _getMoviesByUrl('/movie/upcoming', page);
-  }
+  Future<List<Movie>> getUpComing({int page = 1}) async =>
+      _getMoviesByUrl('/movie/upcoming', page);
 
   Future<List<Movie>> _getMoviesByUrl(String path, int page) async {
     final response = await dio.get(path, queryParameters: {'page': page});
