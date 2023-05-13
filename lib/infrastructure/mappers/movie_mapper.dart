@@ -9,7 +9,9 @@ class MovieMapper {
       backdropPath: movieDB.backdropPath != ''
           ? 'https://image.tmdb.org/t/p/w500${movieDB.backdropPath}'
           : 'https://sd.keepcalms.com/i/keep-calm-poster-not-found.png',
-      genreIds: movieDB.genreIds.map((e) => e.toString()).toList(),
+      genres: movieDB.genreIds.map((e) {
+        return MovieGenre(id: e.toString(), name: '');
+      }).toList(),
       id: movieDB.id,
       originalLanguage: movieDB.originalLanguage,
       originalTitle: movieDB.originalTitle,
@@ -29,7 +31,9 @@ class MovieMapper {
       backdropPath: movieDB.backdropPath != ''
           ? 'https://image.tmdb.org/t/p/w500${movieDB.backdropPath}'
           : 'https://sd.keepcalms.com/i/keep-calm-poster-not-found.png',
-      genreIds: movieDB.genres.map((g) => g.id.toString()).toList(),
+      genres: movieDB.genres.map((genreDB) {
+        return MovieGenre(id: genreDB.id.toString(), name: genreDB.name);
+      }).toList(),
       id: movieDB.id,
       originalLanguage: movieDB.originalLanguage,
       originalTitle: movieDB.originalTitle,
