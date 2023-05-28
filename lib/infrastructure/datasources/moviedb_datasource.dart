@@ -29,7 +29,14 @@ class MovieDbDatasource extends MoviesDatasource {
         await dio.get('/movie/upcoming', queryParameters: {'page': page});
     final movieDBResponse = MovieDbResponse.fromJson(response.data);
     final List<Movie> movies = movieDBResponse.results
-        .where((movieDB) => movieDB.releaseDate.compareTo(DateTime.now()) > 0)
+        .where((movieDB) {
+          final releasedDate = movieDB.releaseDate;
+          final hasReleaseDate = releasedDate != null;
+          if (hasReleaseDate) {
+            return releasedDate.compareTo(DateTime.now()) > 0;
+          }
+          return false;
+        })
         .map((movieDB) => MovieMapper.movieDBToEntity(movieDB))
         .toList();
     return movies;
@@ -44,6 +51,17 @@ class MovieDbDatasource extends MoviesDatasource {
     final movieDBDetails = MovieDbDetails.fromJson(response.data);
     final Movie movie = MovieMapper.movieDetailsToEntity(movieDBDetails);
     return movie;
+  }
+
+  @override
+  Future<List<Movie>> searchMovies(String query) async {
+    return _searchMoviesByquery(query);
+  }
+
+  Future<List<Movie>> _searchMoviesByquery(String query) async {
+    final response =
+        await dio.get('/search/movie', queryParameters: {'query': query});
+    return _jsonToMovies(response.data);
   }
 
   Future<List<Movie>> _getMoviesByUrl(String path, int page) async {
